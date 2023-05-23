@@ -1,5 +1,7 @@
 package ar.edu.unlam.edu.dominio;
 
+import java.util.Scanner;
+
 import ar.edu.unlam.pb1.Calculadora;
 
 public class EjemploCalculadora {
@@ -29,6 +31,17 @@ public class EjemploCalculadora {
         int productoriaConLimiteInfYSuperior = numeroACalcular.productoria(2, 4);
         System.out.println("El producto hasta el limite establecido es de: " + productoriaConLimiteInfYSuperior);
         
+        // Contar divisores
+        Scanner scanner = new Scanner(System.in);
+        Calculadora casio = new Calculadora();
+        int numeroIngresado = 0;
+        
+        System.out.println("Vamos a calcular la cantidad de divisores");
+        System.out.println("Ingre el numero que desea contar");
+        numeroIngresado = scanner.nextInt();
+        System.out.println("La cantidad de divisores es: " + casio.contarDivisores(numeroIngresado));
+        
+        scanner.close();
 	}
 
 }
