@@ -2,6 +2,7 @@ package ar.edu.unlam.pb1.parcial.interfaz;
 
 import ar.edu.unlam.pb1.parcial.dominio.*;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class InterfazRestaurant {
 	static Ingrediente lechuga = new Ingrediente("Lechuga", 30.0, Origen.VEGETAL);
@@ -29,9 +30,9 @@ public class InterfazRestaurant {
 	static Ingrediente quesoDanbo = new Ingrediente("Queso", 60.0, Origen.LECHE);
 	static Ingrediente pepinos = new Ingrediente("Pepinos", 15.0, Origen.VEGETAL);
 	static Ingrediente morron = new Ingrediente("Morron", 25.0, Origen.VEGETAL);
+	private static Scanner teclado = new Scanner(System.in);
 
 	public static void main(String args[]) {
-
 		final int CANTIDAD_MAXIMA_DE_INGREDIENTES = 50;
 		final int CANTIDAD_MAXIMA_DE_ENSALADAS = 10;
 		final int CANTIDAD_MAXIMA_DE_PEDIDOS_POR_DIA = 100;
@@ -40,19 +41,8 @@ public class InterfazRestaurant {
 		Ensalada ensaladasPreEstablecidas[] = new Ensalada[CANTIDAD_MAXIMA_DE_ENSALADAS];
 		Pedido pedidos[] = new Pedido[CANTIDAD_MAXIMA_DE_PEDIDOS_POR_DIA];
 
-		// Deberiamos ver los ingredientes disponibles de acuerdo a la ensalada elegida
-		// por el usuario?
 		ingredientesDisponibles = inicializarIngredientes();
 		ensaladasPreEstablecidas = inicializarEnsaladasPrestablecidas();
-		
-		for (int i = 0; i < ensaladasPreEstablecidas.length; i++) {
-			System.out.println(i + "-" + ensaladasPreEstablecidas[i].toString());
-		}
-		
-		for (int i = 0; i < ingredientesDisponibles.length; i++) {
-			System.out.println(i + "-" + ingredientesDisponibles[i].getNombre());
-		}
-		System.out.println("Bienvenido al Verde");
 
 		/*
 		 * En esta secci�n del c�digo se debe generar la interacci�n con el usuario. Se
@@ -62,13 +52,77 @@ public class InterfazRestaurant {
 		 * incorporarNuevoIngrediente crearUnNuevaEnsalada crearUnNuevoPedido
 		 */
 
+		/*
+		 * - 1 elija una ensalada
+		 * - 2 desea agregar ingredientes?
+		 * Si: mostrar ingredientes y que elija de esas opciones
+		 * No: continua con el pedido
+		 * - 3:Desea agregar otra ensalada?
+		 * Si: volver al paso 2
+		 * No: finalizar pedido y mostrar precio
+		 */
+		System.out.println("Bienvenido al Verde");
+		System.out.println("Elija una ensalada:");
+		// itera y muestra las ensaladas prestablecidas
+		for (int i = 0; i < ensaladasPreEstablecidas.length; i++) {
+			System.out.println((i + 1) + "-" + ensaladasPreEstablecidas[i].toString());
+		}
+		System.out.println("0 - Volver");
+		int opcionElegida = teclado.nextInt();
+		Ensalada ensaladaElegida;
+
+		do {
+			switch (opcionElegida) {
+			case 1: {
+				ensaladaElegida = ensaladasPreEstablecidas[opcionElegida - 1];
+				System.out.println("Elegiste: " + ensaladaElegida.getNombre());
+
+				char opcionElegida2;
+				boolean sePudoAgregar = true;
+				do {
+					System.out.println("Desea agregar ingredientes?: SI o NO");
+					opcionElegida2 = teclado.next().toLowerCase().charAt(0);
+
+					switch (opcionElegida2) {
+					case 's': {
+						sePudoAgregar = incorporarNuevoIngrediente(ingredientesDisponibles, ensaladaElegida);
+						if(!sePudoAgregar) {
+							System.out.println("No se pueden agregar mas de 10 ingredientes");
+							break;
+						}
+						break;
+					}
+					case 'n': {
+						break;
+					}
+					}
+				} while (opcionElegida2=='s' && sePudoAgregar);
+			}
+			case 2: {
+				break;
+			}
+			}
+		} while (opcionElegida == 0);
+
 	}
 
-	private static void incorporarNuevoIngrediente() {
-
+	private static boolean incorporarNuevoIngrediente(Ingrediente[] ingredientesDisponibles, Ensalada ensaladaElegida) {
 		/*
 		 * Se crean nuevos ingredientes los cuales pueden ser utilizados en los platos
 		 */
+		System.out.println("Elija el ingrediente:");
+		for (int i = 0; i < ingredientesDisponibles.length; i++) {
+			System.out.println((i + 1) + "-" + ingredientesDisponibles[i].getNombre());
+		}
+		System.out.println();
+
+		int opcionElegida = teclado.nextInt();
+		Ingrediente ingredienteElegido = ingredientesDisponibles[opcionElegida - 1];
+		System.out.println(ingredienteElegido.getNombre());
+		
+		boolean sePudoAgregar = ensaladaElegida.agregarIngrediente(ingredienteElegido);
+		System.out.println(ensaladaElegida.toString());
+		return sePudoAgregar;
 	}
 
 	private static Ingrediente[] inicializarIngredientes() {
@@ -90,11 +144,9 @@ public class InterfazRestaurant {
 
 		return ingredientes;
 	}
-	
-	
-	
-	private static Ensalada[] inicializarEnsaladasPrestablecidas () {
-		
+
+	private static Ensalada[] inicializarEnsaladasPrestablecidas() {
+
 		Ensalada caesar = new Ensalada("Caesar");
 		caesar.agregarIngrediente(lechuga);
 		caesar.agregarIngrediente(huevo);
@@ -102,14 +154,14 @@ public class InterfazRestaurant {
 		caesar.agregarIngrediente(jugoLimon);
 		caesar.agregarIngrediente(aceiteOliva);
 		caesar.agregarIngrediente(quesoRallado);
-		
+
 		Ensalada waldorf = new Ensalada("Waldorf");
 		waldorf.agregarIngrediente(manzana);
 		waldorf.agregarIngrediente(frutosSecos);
 		waldorf.agregarIngrediente(apio);
 		waldorf.agregarIngrediente(repollo);
 		waldorf.agregarIngrediente(mayonesa);
-		
+
 		Ensalada rusa = new Ensalada("Rusa");
 		rusa.agregarIngrediente(zanahoria);
 		rusa.agregarIngrediente(papa);
@@ -159,8 +211,9 @@ public class InterfazRestaurant {
 		veggie.agregarIngrediente(morron);
 		veggie.agregarIngrediente(zanahoria);
 
-		Ensalada ensaladasNuestras[] = {caesar, waldorf, rusa, coleslaw, caprese, fideosVegetales, mixta, griega, veggie}; 
-		
+		Ensalada ensaladasNuestras[] = { caesar, waldorf, rusa, coleslaw, caprese, fideosVegetales, mixta, griega,
+				veggie };
+
 		return ensaladasNuestras;
 	}
 
@@ -176,7 +229,7 @@ public class InterfazRestaurant {
 
 	private static void crearUnNuevaEnsalada() {
 		// DESPUES ACÄ SE LE AGREGA INGREDIENTES A LA ENSALADA YA ELEJIDA
-		//Ensalada cesar = new Ensalada();
+		// Ensalada cesar = new Ensalada();
 		// cesar.agregarIngrediente(pollo);
 		// cesar.agregarIngrediente(POLLO);
 

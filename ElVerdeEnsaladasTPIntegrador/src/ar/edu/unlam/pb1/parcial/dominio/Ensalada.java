@@ -69,12 +69,22 @@ public class Ensalada {
 		/*
 		 * Devuelve un String con el nombre de la ensalada y el detalle de los ingredientes que la componen
 		 */
+		String nombresDeIngredientes = "";
 		
+		for(int i = 0; i < ingredientes.length; i++) {
+			if(ingredientes[i] != null) {
+				nombresDeIngredientes += ingredientes[i].getNombre() + ", ";
+			}
+		}
 		
-		return "Ensalada: " + nombreDeLaEnsalada + ", Ingredientes = " + Arrays.toString(ingredientes);
+		return "Ensalada: " + nombreDeLaEnsalada + ", Ingredientes = " + nombresDeIngredientes;
 	}
 	
 	public Ingrediente[] getIngredientes () {
 		return this.ingredientes;
+	}
+
+	public String getNombre() {
+		return this.nombreDeLaEnsalada;
 	}
 }
