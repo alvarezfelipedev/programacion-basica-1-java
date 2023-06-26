@@ -2,12 +2,16 @@ package ar.edu.unlam.pb1.parcial.dominio;
 
 public class Pedido {
 	private String nombreDelCliente;
-	private Ensalada[] ensaladas;
+	private Ensalada[] ensaladas = new Ensalada[10];
 	
 	
 	public Pedido(String nombreDelCliente, Ensalada[] ensaladas) {
 		this.nombreDelCliente = nombreDelCliente;
 		this.ensaladas = ensaladas;
+	}
+	
+	public Pedido (String nombreDelCliente) {
+		this.nombreDelCliente = nombreDelCliente;
 	}
 	
 	public String getNombreCliente() {
@@ -33,9 +37,14 @@ public class Pedido {
 		 */
 		double precioParcial = 0.0;
 		for (int i = 0; i < ensaladas.length; i++) {
-			for (int j = 0; j < ensaladas[i].getIngredientes().length; j++) {
-				Ingrediente ingredientes[] = ensaladas[i].getIngredientes();
-				precioParcial += ingredientes[j].getPrecio();
+			if (ensaladas[i] != null) {
+				for (int j = 0; j < ensaladas[i].getIngredientes().length; j++) {
+					Ingrediente ingredientes[] = new Ingrediente[10];
+					ingredientes = ensaladas[i].getIngredientes();
+					if (ingredientes[j] != null) {
+						precioParcial += ingredientes[j].getPrecio();
+					}
+				}
 			}
 		}
 		return precioParcial;

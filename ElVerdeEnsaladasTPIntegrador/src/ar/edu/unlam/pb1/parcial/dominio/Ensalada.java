@@ -34,7 +34,7 @@ public class Ensalada {
 		 * Devuelve true si ning�n ingrediente es de origen TACC.
 		 */
 		for (int i = 0; i < ingredientes.length; i++) {
-			if (ingredientes[i].getOrigen() == Origen.TACC) {
+			if (ingredientes[i] != null && ingredientes[i].getOrigen() == Origen.TACC) {
 				return false;
 			}
 		}
@@ -46,7 +46,7 @@ public class Ensalada {
 		 * Devuelve true si ning�n ingrediente es de origen ANIMAL
 		 */
 		for (int i = 0; i < ingredientes.length; i++) {
-			if (ingredientes[i].getOrigen() == Origen.ANIMAL) {
+			if (ingredientes[i] != null && ingredientes[i].getOrigen() == Origen.ANIMAL) {
 				return false;
 			}
 		}
@@ -58,9 +58,12 @@ public class Ensalada {
 		 * Devuelve true si ning�n ingrediente es de origen ANIMAL ni LECHE ni HUEVO
 		 */
 		for (int i = 0; i < ingredientes.length; i++) {
-			if (ingredientes[i].getOrigen() == Origen.ANIMAL || ingredientes[i].getOrigen() == Origen.LECHE || ingredientes[i].getOrigen() == Origen.HUEVO) {
-				return false;
+			if (ingredientes[i] != null) {
+				if (ingredientes[i].getOrigen() == Origen.ANIMAL || ingredientes[i].getOrigen() == Origen.LECHE || ingredientes[i].getOrigen() == Origen.HUEVO) {
+					return false;
+				}				
 			}
+			
 		}
 		return true;
 	}
